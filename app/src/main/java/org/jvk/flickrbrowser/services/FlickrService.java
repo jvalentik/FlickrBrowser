@@ -1,5 +1,6 @@
 package org.jvk.flickrbrowser.services;
 
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -45,7 +46,7 @@ public class FlickrService {
         downloadRawData.execute(rawUrl);
     }
 
-    public class DownloadRawData extends AsyncTask<String, Void, String> {
+    class DownloadRawData extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPostExecute(String apiData) {
@@ -79,11 +80,11 @@ public class FlickrService {
                 if (is == null) {
                     return null;
                 }
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 reader = new BufferedReader(new InputStreamReader(is));
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line + "\n");
+                    buffer.append(line).append("\n");
                 }
                 return buffer.toString();
             }
