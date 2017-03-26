@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.jvk.flickrbrowser.services.FlickrService;
+import org.jvk.flickrbrowser.services.DataService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,8 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FlickrService dataService =
-                new FlickrService("https://api.flickr.com/services/feeds/photos_public.gne?tags=android, lollipop&format=json&nojsoncallback=1");
+        DataService dataService = new DataService("android, marshmallow", true);
         dataService.execute();
     }
 

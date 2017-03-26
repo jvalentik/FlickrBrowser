@@ -26,6 +26,10 @@ public class FlickrService {
         this.downloadStatus = ServiceStatus.IDLE;
     }
 
+    public void setRawUrl(String rawUrl) {
+        this.rawUrl = rawUrl;
+    }
+
     public void reset() {
         this.downloadStatus = ServiceStatus.IDLE;
         this.rawUrl = null;
