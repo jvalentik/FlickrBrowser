@@ -30,6 +30,10 @@ public class DataService extends FlickrService {
         }
     }
 
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+
     public void execute() {
         super.setRawUrl(destinationUrl.toString());
         Log.v(LOG_TAG, "Built URI: " + destinationUrl);
@@ -93,7 +97,7 @@ public class DataService extends FlickrService {
         }
     }
 
-    private class DownloadJsonData extends DownloadRawData {
+    public class DownloadJsonData extends DownloadRawData {
 
         @Override
         protected void onPostExecute(String apiData) {
@@ -103,7 +107,8 @@ public class DataService extends FlickrService {
 
         @Override
         protected String doInBackground(String... params) {
-            return super.doInBackground(params);
+            String[] param = { destinationUrl.toString()  };
+            return super.doInBackground(param);
         }
     }
 }

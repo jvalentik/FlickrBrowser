@@ -2,13 +2,23 @@ package org.jvk.flickrbrowser;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.jvk.flickrbrowser.domain.Photo;
 import org.jvk.flickrbrowser.services.DataService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private List<Photo> photos = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private FlickrRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,8 +26,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        DataService dataService = new DataService("android, marshmallow", true);
-        dataService.execute();
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        PhotosProcessor photosProcessor = new PhotosProcessor("google", true);
+        photosProcessor.execute();
     }
 
     @Override
@@ -40,5 +52,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    class PhotosProcessor extends DataService {
+
+        public PhotosProcessor(String searchCriteria, boolean matchAll) {
+            super(searchCriteria, matchAll);
+        }
+
+        public void execute() {
+            super.execute();
+            DataProcessor processor = new DataProcessor();
+            processor.execute();
+        }
+
+        class DataProcessor extends DownloadJsonData {
+
+            @Override
+            protected void onPostExecute(String apiData) {
+                super.onPostExecute(apiData);
+                adapter = new FlickrRecyclerViewAdapter(getPhotos(), MainActivity.this);
+                recyclerView.setAdapter(adapter);
+            }
+        }
     }
 }
